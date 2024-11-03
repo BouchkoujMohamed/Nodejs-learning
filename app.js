@@ -52,9 +52,17 @@ app.set("view engine","ejs")
 //   res.send("<h1>send sucses</h1>")
 //    });
 
+
+         //get request
 app.get("/", (req, res) => {
-  res.render("index",{})
+  console.log("*********************************")
+  MyData.find()
+    .then((result)=>{res.render("index",{result:result})})
+    .catch(err=>{console.log(err)});
+    
+
 });
+
 app.get("/user/add.html", (req, res) => {
   res.render("user/add",{})
 });
@@ -68,9 +76,20 @@ app.get("/user/view.html", (req, res) => {
   res.render("user/view",{})
 });
 
+
+    //post request
+app.post("/user/add.html", (req, res) => {
+    const user = new MyData(req.body);
+    user.save()
+    .then(()=>{res.redirect("/user/add.html")})
+    .catch(err =>{console.log(err)})
+  });
+
+  
+
        //connection with mongo db
 mongoose
-  .connect("mongodb+srv://bouchkoujmohamed200:ysThYVCmVg6EMIdI@cluster0.itmma.mongodb.net/all-data?retryWrites=true&w=majority&appName=Cluster0")
+  .connect("mongodb+srv://bouchkoujmohamed200:ysThYVCmVg6EMIdI@cluster0.itmma.mongodb.net/node-data?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
     app.listen(port, () => {
         console.log(`http://localhost:${port}/`);

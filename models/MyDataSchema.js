@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const articleSchema = new Schema({
-    userNameee: String,
+const UserSchema = new Schema({
+    firstName: String,
+    lastName: String,
+    email: String,
+    telephone: Number,
+    age: Number,
+    country:String,
+    Gender:String,
 })
 
-const MyData = mongoose.model("MyDataa" , articleSchema);
+const MyData = mongoose.model("MyDataa", UserSchema);
 module.exports = MyData;
