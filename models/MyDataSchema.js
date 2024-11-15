@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     age: Number,
     country:String,
     Gender:String,
-})
+},{timestamps:true})
 
 const MyData = mongoose.model("MyDataa", UserSchema);
 module.exports = MyData;

@@ -60,14 +60,14 @@
                 <td><%= res.Gender %>		</td>
                 <td><%= res.country %>	</td>
                 <td><%= res.age %>	</td>
-                <td>1 days ago </td>
+                <td><%= moment(res.updatedAt).fromNow()%> </td>
                 <td>
                   <a
                     data-bs-toggle="tooltip"
                     data-bs-title="View details"
                     data-bs-placement="top"
                     class="btn btn-primary btn-sm"
-                    href="./user/view.html"
+                    href="./user/<%= res.id %>"
                     ><i class="bi bi-eye"></i
                   ></a>
   
@@ -92,13 +92,6 @@
               </tr>
             <% }) %>
             
-  
-      
-
-
-      
-      
-      
           </tbody>
         </table>
       </section>

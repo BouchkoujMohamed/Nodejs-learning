@@ -4,6 +4,7 @@ const port = 3000;
 const mongoose = require("mongoose");
 app.use(express.urlencoded({extended:true}));
 const MyData = require("./models/MyDataSchema.js");
+var moment = require('moment');
 
 
 app.use(express.static("public"));
@@ -55,27 +56,39 @@ app.set("view engine","ejs")
 
          //get request
 app.get("/", (req, res) => {
-  console.log("*********************************")
   MyData.find()
-    .then((result)=>{res.render("index",{result:result})})
+    .then((result)=>{
+      console.log(result)
+      res.render("index",{result:result, moment:moment})})
     .catch(err=>{console.log(err)});
-    
-
 });
 
-app.get("/user/add.html", (req, res) => {
+
+app.get("/user/add.html", (req, res) => { 
   res.render("user/add",{})
 });
+
 app.get("/user/edit.html", (req, res) => {
   res.render("user/edit",{})
 });
 app.get("/user/search.html", (req, res) => {
   res.render("user/search",{})
 });
-app.get("/user/view.html", (req, res) => {
-  res.render("user/view",{})
+
+app.get("/user/:id", (req, res) => {
+  MyData.findById(req.params.id)
+    .then((result)=>{
+      res.render("user/view.ejs",{result:result,moment:moment})
+    })
+    .catch(err=>{console.log(err)});
 });
 
+app.get("/user/:id", (req, res) => {
+  
+  MyData.findById(req.params.id)
+    .then((result)=>{res.render("user/edit.ejs",{result:result})})
+    .catch(err=>{console.log(err)});
+});
 
     //post request
 app.post("/user/add.html", (req, res) => {
