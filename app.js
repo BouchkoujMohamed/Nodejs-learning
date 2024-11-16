@@ -6,6 +6,10 @@ app.use(express.urlencoded({extended:true}));
 const MyData = require("./models/MyDataSchema.js");
 var moment = require('moment');
 
+var methodOverride = require('method-override')
+app.use(methodOverride('_method'))
+
+
 
 app.use(express.static("public"));
 
@@ -28,37 +32,11 @@ liveReloadServer.server.once("connection", () => {
 // reception
 app.set("view engine","ejs")
 
-
-// app.get("/", (req, res) => {
-//   // res.sendFile("./views/home.html", { root: __dirname });
-  
-//                  // reception
-//   // find tada from mongodb
-// //   MyData.find()
-// //   .then((result)=>{res.render("home.ejs" ,{mytitle:"homepage", arr:result});})
-// //   .catch(err=>{console.log(err)})
-// });
-
-          //  send data to mongo db
-  // app.post("/", (req, res) => {
-  //   console.log(req.body);
-  //   const myData = new MyData(req.body);
-  //   myData.save()
-  //   .then(()=>{res.redirect("/index.html")})
-  //   .catch(err =>{console.log(err)})
-  // });
-
-          //sure tada is sended
-// app.get("/index.html", (req, res) => {
-//   res.send("<h1>send sucses</h1>")
-//    });
-
-
          //get request
 app.get("/", (req, res) => {
   MyData.find()
     .then((result)=>{
-      console.log(result)
+      // console.log(result)
       res.render("index",{result:result, moment:moment})})
     .catch(err=>{console.log(err)});
 });
@@ -68,14 +46,11 @@ app.get("/user/add.html", (req, res) => {
   res.render("user/add",{})
 });
 
-app.get("/user/edit.html", (req, res) => {
-  res.render("user/edit",{})
-});
-app.get("/user/search.html", (req, res) => {
-  res.render("user/search",{})
-});
+// app.get("/user/search.html", (req, res) => {
+//   res.render("user/search",{})
+// });
 
-app.get("/user/:id", (req, res) => {
+app.get("/view/:id", (req, res) => {
   MyData.findById(req.params.id)
     .then((result)=>{
       res.render("user/view.ejs",{result:result,moment:moment})
@@ -83,10 +58,9 @@ app.get("/user/:id", (req, res) => {
     .catch(err=>{console.log(err)});
 });
 
-app.get("/user/:id", (req, res) => {
-  
+app.get("/edit/:id", (req, res) => {
   MyData.findById(req.params.id)
-    .then((result)=>{res.render("user/edit.ejs",{result:result})})
+    .then((result)=>{res.render("user/edit.ejs",{result:result,moment:moment})})
     .catch(err=>{console.log(err)});
 });
 
@@ -94,11 +68,27 @@ app.get("/user/:id", (req, res) => {
 app.post("/user/add.html", (req, res) => {
     const user = new MyData(req.body);
     user.save()
-    .then(()=>{res.redirect("/user/add.html")})
+    .then(()=>{res.redirect("/")})
     .catch(err =>{console.log(err)})
   });
 
-  
+  // delet request
+  app.delete("/user/:id", (req, res) => {
+    MyData.deleteOne({_id:req.params.id})
+    .then(()=>{
+      res.redirect("/")
+    })
+    .catch(err=>{console.log(err)});
+  });
+
+  app.delete("/edit/:id", (req, res) => {
+    MyData.findByIdAndDelete(req.params.id)
+    .then(()=>{
+      res.redirect("/")
+    })
+    .catch(err=>{console.log(err)});
+  });
+
 
        //connection with mongo db
 mongoose

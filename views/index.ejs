@@ -67,7 +67,7 @@
                     data-bs-title="View details"
                     data-bs-placement="top"
                     class="btn btn-primary btn-sm"
-                    href="./user/<%= res.id %>"
+                    href="./view/<%= res.id %>"
                     ><i class="bi bi-eye"></i
                   ></a>
   
@@ -76,18 +76,24 @@
                     data-bs-title="Edit user"
                     data-bs-placement="top"
                     class="btn btn-primary btn-sm"
-                    href="./user/edit.html"
+                    href="./edit/<%= res.id %>"
                   >
                     <i class="bi bi-pencil"></i>
                   </a>
-                  <button
+                  <form  
+                  action="/user/<%= res.id %>?_method=DELETE" method="post" 
+                  style="display: inline;">
+                    <button
                     data-bs-toggle="tooltip"
                     data-bs-title="Delete user"
                     data-bs-placement="top"
                     class="btn btn-danger btn-sm"
+                    type="submit"
                   >
-                    <i class="bi bi-trash"></i>
+                  <i class="bi bi-trash"></i>
                   </button>
+                  
+                  </form>
                 </td>
               </tr>
             <% }) %>
