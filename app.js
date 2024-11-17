@@ -41,14 +41,9 @@ app.get("/", (req, res) => {
     .catch(err=>{console.log(err)});
 });
 
-
 app.get("/user/add.html", (req, res) => { 
   res.render("user/add",{})
 });
-
-// app.get("/user/search.html", (req, res) => {
-//   res.render("user/search",{})
-// });
 
 app.get("/view/:id", (req, res) => {
   MyData.findById(req.params.id)
@@ -66,8 +61,8 @@ app.get("/edit/:id", (req, res) => {
 
     //post request
 app.post("/user/add.html", (req, res) => {
-    const user = new MyData(req.body);
-    user.save()
+
+    MyData.create(req.body)
     .then(()=>{res.redirect("/")})
     .catch(err =>{console.log(err)})
   });
@@ -87,6 +82,16 @@ app.post("/user/add.html", (req, res) => {
       res.redirect("/")
     })
     .catch(err=>{console.log(err)});
+  });
+
+  //update request
+  app.put("/edit/:id", (req, res) => {
+    MyData.updateOne({_id:req.params.id}, req.body)
+    .then(()=>{
+      res.redirect("/")
+    })
+    .catch(err=>{console.log(err)});
+    
   });
 
 
