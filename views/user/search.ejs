@@ -36,8 +36,12 @@
 
       <section class="w-100">
         <%- include('../components/navebar.ejs') %>
-        
-        <table
+
+          <% if (result.length=="") {%>
+            <h1 class="text-center mx-auto table mt-5 table-striped table-bordered" style="color: red; font-size: 28px;margin-top: 4rm;">this name that you input  is not in the data ! please  input an other name</h1>
+          <% } 
+          else{ %> 
+            <table
           style="width: 99%"
           class="text-center mx-auto table mt-5 table-striped table-bordered"
         >
@@ -47,48 +51,64 @@
               <th scope="col">Full Name</th>
               <th scope="col">Gender</th>
               <th scope="col">Country</th>
+              <th scope="col">age</th>
+              <th scope="col">telephone</th>
 
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>test1</td>
-              <td>test2</td>
-              <td>@test3</td>
-
-              <td>
-                <a
-                  data-bs-toggle="tooltip"
-                  data-bs-title="View details"
-                  data-bs-placement="top"
-                  class="btn btn-primary btn-sm"
-                  href="./user/view.html"
-                  ><i class="bi bi-eye"></i
-                ></a>
-
-                <a
-                  data-bs-toggle="tooltip"
-                  data-bs-title="Edit user"
-                  data-bs-placement="top"
-                  class="btn btn-primary btn-sm"
-                  href="./user/edit.html"
-                >
-                  <i class="bi bi-pencil"></i>
-                </a>
-                <button
-                  data-bs-toggle="tooltip"
-                  data-bs-title="Delete user"
-                  data-bs-placement="top"
-                  class="btn btn-danger btn-sm"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
+            <% result.forEach((res,i) => { %>
+              <tr>
+                <th scope="row"><%= i+1 %></th>
+                <td><%= res.firstName +" "+res.lastName %></td>
+                <td><%= res.Gender%></td>
+                <td><%= res.country%></td>
+                <td><%= res.age%></td>
+                <td><%= res.telephone%></td>
+                <td>
+                  <a
+                    data-bs-toggle="tooltip"
+                    data-bs-title="View details"
+                    data-bs-placement="top"
+                    class="btn btn-primary btn-sm"
+                    href="/view/<%= res.id%>"
+                    ><i class="bi bi-eye"></i>
+                  </a>
+  
+                  <a
+                    data-bs-toggle="tooltip"
+                    data-bs-title="Edit user"
+                    data-bs-placement="top"
+                    class="btn btn-primary btn-sm"
+                    href="/edit/<%= res.id%>"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <form  
+                  action="/user/<%= res.id %>?_method=DELETE" method="post" 
+                  style="display: inline;">
+                    <button
+                    data-bs-toggle="tooltip"
+                    data-bs-title="Delete user"
+                    data-bs-placement="top"
+                    class="btn btn-danger btn-sm"
+                    type="submit"
+                    >
+                    <i class="bi bi-trash"></i>
+                    </button>
+                  
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+            
           </tbody>
-        </table>
+            </table>
+          <% } %>
+        
+        
+        
       </section>
     </main>
     <script src="../js/bootstrap.bundle.min.js"></script>
